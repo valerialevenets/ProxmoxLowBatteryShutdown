@@ -1,0 +1,23 @@
+{
+    "name": "valerialevenets94/proxmox-low-battery-shutdown",
+    "type": "project",
+    "require": {
+        "php": "^8.3",
+        "corsinvest/cv4pve-api-php": "^8.3",
+        "laminas/laminas-http": "^2.21",
+        "m1/env": "^2.2"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Valerialevenets94\\ProxmoxLowBatteryShutdown\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Valerie",
+            "email": "valeria.levenets94@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
