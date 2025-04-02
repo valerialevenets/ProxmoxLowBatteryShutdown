@@ -9,7 +9,6 @@ class Proxmox
 
     public function shutdownNode(string $node)
     {
-        die('TURNED OFF (not really, check Proxmox Class)'.PHP_EOL);
         $this->client->getNodes()->get($node)->getStatus()->nodeCmd('shutdown');
     }
 }
