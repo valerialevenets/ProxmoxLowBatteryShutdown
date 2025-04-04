@@ -1,14 +1,13 @@
 <?php
 
 namespace Valerialevenets94\ProxmoxLowBatteryShutdown\Proxmox;
-use Corsinvest\ProxmoxVE\Api\PveClient;
 
 class Proxmox
 {
-    public function __construct(private readonly PveClient $client){}
+    public function __construct(private readonly ProxmoxNodeStatusProvider $nodeStatusProvider){}
 
-    public function shutdownNode(string $node)
+    public function shutdownNode(string $node): void //TODO change return type in the future
     {
-        $this->client->getNodes()->get($node)->getStatus()->nodeCmd('shutdown');
+        $this->nodeStatusProvider->getNodeStatus($node)->nodeCmd('shutdown');
     }
 }
