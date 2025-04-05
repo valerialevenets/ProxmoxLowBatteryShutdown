@@ -1,11 +1,27 @@
 <?php
 
 namespace Valerialevenets94\ProxmoxLowBatteryShutdown\Config;
+
+use Particle\Validator\Validator;
+
 class ConfigProvider
 {
-    //TODO add config validation
     public function __construct(private readonly array $config)
-    {}
+    {
+        $validator = new Validator();
+        $validator->required('BATTERY_THRESHOLD')->integer(true)->between(20, 90);
+        $validator->required('PVE_URI')->string()->allowEmpty(false);
+        $validator->required('PVE_API_TOKEN')->string()->allowEmpty(false);
+        $validator->required('PVE_NODE_NAME')->string()->allowEmpty(false);
+        $validator->required('PVE_CERTIFICATE_VALIDATION')->bool()->allowEmpty(false);
+
+        $validator->required('HA_URI')->string()->allowEmpty(false);
+        $validator->required('HA_API_TOKEN')->string()->allowEmpty(false);
+
+        if (! empty($messages = $validator->validate($this->config)->getMessages())) {
+            throw new \Exception(json_encode($messages));
+        }
+    }
 
     public function getBatteryThreshold(): int
     {
