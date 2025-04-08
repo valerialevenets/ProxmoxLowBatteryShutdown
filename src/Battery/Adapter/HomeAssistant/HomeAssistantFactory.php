@@ -1,6 +1,6 @@
 <?php
 
-namespace Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\Adapter;
+namespace Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\Adapter\HomeAssistant;
 
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
