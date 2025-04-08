@@ -1,5 +1,6 @@
 {
     "name": "valerialevenets94/proxmox-low-battery-shutdown",
+    "description": "The purpose of this project is to shutdown Proxmox VE node if UPS battery level is low",
     "type": "project",
     "require": {
         "php": "^8.3",
