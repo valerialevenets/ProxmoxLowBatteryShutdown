@@ -4,8 +4,8 @@ namespace Valerialevenets94\ProxmoxLowBatteryShutdown;
 
 use Corsinvest\ProxmoxVE\Api\PveClient;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\Adapter\AdapterInterface;
-use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\Adapter\HomeAssistant;
-use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\Adapter\HomeAssistantFactory;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\Adapter\HomeAssistant\HomeAssistant;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\Adapter\HomeAssistant\HomeAssistantFactory;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatus;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatusFactory;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ConfigProvider;

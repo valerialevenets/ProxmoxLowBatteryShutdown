@@ -3,6 +3,7 @@
 namespace Valerialevenets94\ProxmoxLowBatteryShutdown\Config;
 
 use Particle\Validator\Validator;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\Exception\ConfigValidationException;
 
 class ConfigProvider
 {
@@ -19,7 +20,7 @@ class ConfigProvider
         $validator->required('HA_API_TOKEN')->string()->allowEmpty(false);
 
         if (! empty($messages = $validator->validate($this->config)->getMessages())) {
-            throw new \Exception(json_encode($messages));
+            throw new ConfigValidationException($messages);
         }
     }
 
