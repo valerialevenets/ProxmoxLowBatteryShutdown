@@ -12,4 +12,8 @@ class BatteryStatus
     {
         return $this->adapter->getBatteryLevel();
     }
+    public function isDischarging(): bool
+    {
+        return $this->adapter->isDischarging();
+    }
 }

@@ -10,6 +10,8 @@ use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\Adapter\Exception\Batter
 
 class HomeAssistant implements AdapterInterface
 {
+    const SENSOR_BATTERY_PERCENT = 'sensor.bluetti_total_battery_percent';
+    const SENSOR_AC_INPUT = 'sensor.bluetti_ac_input_power';
     public function __construct(private readonly string $uri, private readonly string $token) {}
 
     /**
@@ -24,25 +26,33 @@ class HomeAssistant implements AdapterInterface
      */
     public function getBatteryLevel(): int
     {
-        return $this->getValidatedState($this->getData());
+        return $this->getValidatedState($this->getSensorState(self::SENSOR_BATTERY_PERCENT));
+    }
+    public function isCharging(): bool
+    {
+        return (bool) $this->getValidatedState($this->getSensorState(self::SENSOR_AC_INPUT));
+    }
+    public function isDischarging(): bool
+    {
+        return ! $this->isCharging();
     }
 
     private function getValidatedState(Response $response): int
     {
         $data = json_decode($response->getBody(), true);
         $validator = new Validator();
-        $validator->required('state')->integer()->between(0, 100)->allowEmpty(false);
+        $validator->required('state')->integer()->between(0, 400)->allowEmpty(false);
         if (! empty($messages = $validator->validate($data)->getMessages())) {
             throw new BatteryStatusUnavailableException(['messages' => $messages, 'data' => $data]);
         }
         return $data['state'];
     }
-    private function getData(): Response
+    private function getSensorState(string $sensorName): Response
     {
         $client = new Client();
 
-        //todo uri should be configured with config file
-        $client->setUri("http://{$this->uri}/api/states/sensor.bluetti_total_battery_percent");
+        //todo add http/https selection
+        $client->setUri("http://{$this->uri}/api/states/{$sensorName}");
         $client->setMethod('GET');
         $client->setHeaders([
             'Authorization' => implode(' ', ['Bearer', $this->token])

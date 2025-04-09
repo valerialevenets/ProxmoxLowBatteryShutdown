@@ -3,6 +3,7 @@
 namespace Valerialevenets94\ProxmoxLowBatteryShutdownTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\TestWith;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\App;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatus;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ValueObject\Mode;
@@ -29,24 +30,28 @@ class AppTest extends TestCase
         );
     }
 
-    public function testRunShouldCallShutdownIfBatteryLevelIsLowerThanThreshold(): void
+    public function testRunShouldCallShutdownIfBatteryDischargingAndLevelIsLowerThanThreshold(): void
     {
         $this->proxmox->expects($this->once())->method('shutdownNode')
             ->with($this->nodeName);
         $this->batteryStatus->expects($this->once())->method('getChargeLevel')
             ->willReturn($this->threshold - 5);
+        $this->batteryStatus->expects($this->once())->method('isDischarging')
+            ->willReturn(true);
 
         $this->sut->run();
     }
-
-    public function testRunShouldNotCallShutdownIfBatteryLevelIsLowerThanThreshold(): void
+    #[TestWith([85, true], 'test with discharging battery with higher than threshold level')]
+    #[TestWith([20, false], 'test with charging battery with lower than threshold level')]
+    public function testShutdownShouldNotBeCalledIfBatteryIsChargingOrAboveThreshold(int $chargeLevel, bool $discharging): void
     {
         $this->proxmox->expects($this->never())->method('shutdownNode')
             ->with($this->nodeName);
         $this->batteryStatus->expects($this->once())->method('getChargeLevel')
-            ->willReturn($this->threshold + 5);
+            ->willReturn($chargeLevel);
+        $this->batteryStatus->method('isDischarging')
+            ->willReturn($discharging);
         $this->sut->run();
     }
-
     //TODO: test standalone mode
 }
