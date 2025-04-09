@@ -20,6 +20,7 @@ class AppFactory implements FactoryInterface
         return new App(
             $container->get(Proxmox::class),
             $container->get(BatteryStatus::class),
+            $config->getMode(),
             $config->getBatteryThreshold(),
             $config->getPveNodeName()
         );

@@ -4,6 +4,7 @@ namespace Valerialevenets94\ProxmoxLowBatteryShutdown\Config;
 
 use Particle\Validator\Validator;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\Exception\ConfigValidationException;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ValueObject\Mode;
 
 class ConfigProvider
 {
@@ -11,6 +12,8 @@ class ConfigProvider
     {
         $validator = new Validator();
         $validator->required('BATTERY_THRESHOLD')->integer(true)->between(20, 90);
+        $validator->required('MODE')->string()->inArray([Mode::CRON, Mode::STANDALONE], true);
+
         $validator->required('PVE_URI')->string()->allowEmpty(false);
         $validator->required('PVE_API_TOKEN')->string()->allowEmpty(false);
         $validator->required('PVE_NODE_NAME')->string()->allowEmpty(false);
@@ -27,6 +30,10 @@ class ConfigProvider
     public function getBatteryThreshold(): int
     {
         return $this->config['BATTERY_THRESHOLD'];
+    }
+    public function getMode(): string
+    {
+        return $this->config['MODE'];
     }
     public function getPveUri(): string
     {
