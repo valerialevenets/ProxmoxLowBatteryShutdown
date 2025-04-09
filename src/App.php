@@ -37,7 +37,7 @@ class App
     }
     private function runOnce(): void
     {
-        if ($this->battery->getChargeLevel() <= $this->threshold) {
+        if ($this->battery->getChargeLevel() <= $this->threshold && $this->battery->isDischarging()) {
             $this->proxmox->shutdownNode($this->node);
         }
     }
