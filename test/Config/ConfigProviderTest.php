@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ConfigProvider;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\Exception\ConfigValidationException;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ValueObject\Mode;
 
 class ConfigProviderTest extends TestCase
 {
@@ -13,6 +14,10 @@ class ConfigProviderTest extends TestCase
     private ConfigProvider $sut;
     protected function setUp():void
     {
+        $modes = [
+            Mode::CRON,
+            Mode::STANDALONE
+        ];
         $this->config = [
             'PVE_URI' => 'uri',
             'PVE_API_TOKEN' => 'token',
@@ -20,7 +25,8 @@ class ConfigProviderTest extends TestCase
             'PVE_CERTIFICATE_VALIDATION' => false,
             'HA_URI' => 'skdskdkd',
             'HA_API_TOKEN' => 'jkfjkfdkjka',
-            'BATTERY_THRESHOLD' => 85
+            'BATTERY_THRESHOLD' => 85,
+            'MODE' => $modes[rand(0,1)]
         ];
         $this->sut = new ConfigProvider($this->config);
     }
@@ -122,6 +128,16 @@ class ConfigProviderTest extends TestCase
     {
         $this->expectException(ConfigValidationException::class);
         $this->config['HA_API_TOKEN'] = $token;
+        new ConfigProvider($this->config);
+    }
+    #[TestWith([null], 'Test with null mode')]
+    #[TestWith([''], 'Test with empty mode')]
+    #[TestWith([false], 'Test with negative boolean mode')]
+    #[TestWith([true], 'Test with positive boolean mode')]
+    public function testSutConstructorShouldThrowExceptionIfModeIsInvalid(mixed $mode)
+    {
+        $this->expectException(ConfigValidationException::class);
+        $this->config['MODE'] = $mode;
         new ConfigProvider($this->config);
     }
 }
