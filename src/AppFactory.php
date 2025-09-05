@@ -6,6 +6,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatus;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ConfigProvider;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\Notifier;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Proxmox\Proxmox;
 
 class AppFactory implements FactoryInterface
@@ -20,6 +21,7 @@ class AppFactory implements FactoryInterface
         return new App(
             $container->get(Proxmox::class),
             $container->get(BatteryStatus::class),
+            $container->get(Notifier::class),
             $config->getMode(),
             $config->getBatteryThreshold(),
             $config->getPveNodeName()

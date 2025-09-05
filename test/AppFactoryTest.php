@@ -9,6 +9,7 @@ use Valerialevenets94\ProxmoxLowBatteryShutdown\App;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\AppFactory;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatus;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ConfigProvider;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\Notifier;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Proxmox\Proxmox;
 
 class AppFactoryTest extends TestCase
@@ -26,6 +27,7 @@ class AppFactoryTest extends TestCase
                 ConfigProvider::class,
                 Proxmox::class,
                 BatteryStatus::class,
+                Notifier::class
             ]
         );
 

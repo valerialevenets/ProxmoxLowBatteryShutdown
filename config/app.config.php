@@ -10,6 +10,11 @@ use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatus;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatusFactory;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ConfigProvider;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ConfigProviderFactory;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\AbstractNotification;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\Factory\NotifierFactory;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\Factory\TelegramNotificationFactory;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\Notifier;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\TelegramNotification;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Proxmox\Proxmox;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Proxmox\ProxmoxFactory;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Proxmox\ProxmoxNodeStatusProvider;
@@ -24,9 +29,12 @@ return [
         Proxmox::class => ProxmoxFactory::class,
         HomeAssistant::class => HomeAssistantFactory::class,
         PveClient::class => PveClientFactory::class,
-        ProxmoxNodeStatusProvider::class => ProxmoxNodeStatusProviderFactory::class
+        ProxmoxNodeStatusProvider::class => ProxmoxNodeStatusProviderFactory::class,
+        Notifier::class => NotifierFactory::class,
+        TelegramNotification::class => TelegramNotificationFactory::class,
     ],
     'aliases' => [
-        AdapterInterface::class => HomeAssistant::class
+        AdapterInterface::class => HomeAssistant::class,
+        AbstractNotification::class => TelegramNotification::class
     ]
 ];

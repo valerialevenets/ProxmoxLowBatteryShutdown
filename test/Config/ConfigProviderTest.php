@@ -26,7 +26,10 @@ class ConfigProviderTest extends TestCase
             'HA_URI' => 'skdskdkd',
             'HA_API_TOKEN' => 'jkfjkfdkjka',
             'BATTERY_THRESHOLD' => 85,
-            'MODE' => $modes[rand(0,1)]
+            'MODE' => $modes[rand(0,1)],
+
+            'TELEGRAM_CHAT_ID' => '2112',
+            'TELEGRAM_TOKEN' => 'agasdgasd',
         ];
         $this->sut = new ConfigProvider($this->config);
     }

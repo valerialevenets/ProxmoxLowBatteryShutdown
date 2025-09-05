@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\TestWith;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\App;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatus;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ValueObject\Mode;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\Notifier;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Proxmox\Proxmox;
 
 class AppTest extends TestCase
@@ -16,6 +17,8 @@ class AppTest extends TestCase
     private MockObject $proxmox;
     private MockObject $batteryStatus;
 
+    private MockObject $notifier;
+
     private string $nodeName;
     private int $threshold;
     private string $mode;
@@ -24,6 +27,7 @@ class AppTest extends TestCase
         $this->sut = new App(
             $this->proxmox = $this->createMock(Proxmox::class),
             $this->batteryStatus = $this->createMock(BatteryStatus::class),
+            $this->notifier = $this->createMock(Notifier::class),
             $this->mode = Mode::CRON,
             $this->threshold = rand(45, 80),
             $this->nodeName = 'NodeName'.uniqid()

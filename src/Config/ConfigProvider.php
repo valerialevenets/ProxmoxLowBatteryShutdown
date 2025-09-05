@@ -22,6 +22,9 @@ class ConfigProvider
         $validator->required('HA_URI')->string()->allowEmpty(false);
         $validator->required('HA_API_TOKEN')->string()->allowEmpty(false);
 
+        $validator->required('TELEGRAM_CHAT_ID')->string()->allowEmpty(false);
+        $validator->required('TELEGRAM_TOKEN')->string()->allowEmpty(false);
+
         if (! empty($messages = $validator->validate($this->config)->getMessages())) {
             throw new ConfigValidationException($messages);
         }
@@ -58,5 +61,14 @@ class ConfigProvider
     public function getHAUri(): string
     {
         return $this->config['HA_URI'];
+    }
+
+    public function getTelegramChatId(): string
+    {
+        return $this->config['TELEGRAM_CHAT_ID'];
+    }
+    public function getTelegramBotToken(): string
+    {
+        return $this->config['TELEGRAM_TOKEN'];
     }
 }

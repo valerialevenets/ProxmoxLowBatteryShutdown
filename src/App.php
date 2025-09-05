@@ -5,6 +5,7 @@ namespace Valerialevenets94\ProxmoxLowBatteryShutdown;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Battery\BatteryStatus;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ConfigProvider;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Config\ValueObject\Mode;
+use Valerialevenets94\ProxmoxLowBatteryShutdown\Notification\Notifier;
 use Valerialevenets94\ProxmoxLowBatteryShutdown\Proxmox\Proxmox;
 
 class App
@@ -12,6 +13,7 @@ class App
     public function __construct(
         private readonly Proxmox $proxmox,
         private readonly BatteryStatus $battery,
+        private readonly Notifier $notifier,
         private readonly string $mode,
         private readonly int $threshold,
         private readonly string $node
@@ -38,6 +40,7 @@ class App
     private function runOnce(): void
     {
         if ($this->battery->getChargeLevel() <= $this->threshold && $this->battery->isDischarging()) {
+            $this->notifier->notify();
             $this->proxmox->shutdownNode($this->node);
         }
     }
